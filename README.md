@@ -133,6 +133,7 @@ The **Forecast** object, it contains both weather data and the HTTP response fro
     	-  Longitude of the forecast points  
 - **points**  
 	-  Array of forecast data Point objects.  
+
 **Methods**  
 - **get_series([var1, var2, ... , varn])**  
 		-  Returns list of dicts sorted by datetime, containing the desired variables in a time series.  
@@ -164,7 +165,8 @@ The **History** object, it contains both weather data and the HTTP response from
 - **lon**  
     	-  Longitude of the historical points  
 - **points**  
-	    -  Array of historical data Point objects.  
+	-  Array of historical data Point objects.  
+  
 **Methods**  
 - **get_series([var1, var2, ... , varn])**  
 		-  Returns list of dicts sorted by datetime, containing the desired variables in a time series.  
