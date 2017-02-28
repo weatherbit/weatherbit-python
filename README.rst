@@ -17,13 +17,13 @@ You should use pip to install pyweatherbit.
 Requirements
 ############
 
-- You need an API key to use it (https://weatherbit.io/). Sign up for the Free tier to get started.
+- You need an API key to use it. Sign up for the [free api key](https://www.weatherbit.io/pricing) to get started.
 
 
 Basic Use
 #########
 
-For additional information, refer to the Weatherbit.io documentation at https://www.weatherbit.io .
+For additional information, refer to the [Weatherbit.io API documentation](https://www.weatherbit.io/api) .
 
 To use the wrapper:
 
@@ -118,7 +118,7 @@ The **Forecast** object, it contains both weather data and the HTTP response fro
 
 **Attributes**
 	- **response**
-		- The Response object returned from requests request.get() method. See https://requests.readthedocs.org/en/latest/api/#requests.Response
+		- The Response object returned from requests request.get() method.
 	- **http_headers**
 		- A dictionary of response headers. 
 	- **json**
@@ -150,7 +150,7 @@ The **History** object, it contains both weather data and the HTTP response from
 
 **Attributes**
 	- **response**
-		- The Response object returned from requests request.get() method. See https://requests.readthedocs.org/en/latest/api/#requests.Response
+		- The Response object returned from requests request.get() method.
 	- **http_headers**
 		- A dictionary of response headers. 
 	- **json**
