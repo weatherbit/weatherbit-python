@@ -17,13 +17,13 @@ You should use pip to install pyweatherbit.
 Requirements
 ############
 
-- You need an API key to use it. Sign up for the [free api key](https://www.weatherbit.io/pricing) to get started.
+- You need an API key to use it. Sign up for the free api [key](https://www.weatherbit.io/pricing "Free API Key") to get started.
 
 
 Basic Use
 #########
 
-For additional information, refer to the [Weatherbit.io API documentation](https://www.weatherbit.io/api) .
+For additional information, refer to the Weatherbit.io API [documentation](https://www.weatherbit.io/api "Api Documentation") .
 
 To use the wrapper:
 
