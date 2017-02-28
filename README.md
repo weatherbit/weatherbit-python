@@ -1,5 +1,5 @@
 *******************
-Python Weather API - Pyweatherbit
+# Python Weather API - Pyweatherbit
 *******************
 
 This is a wrapper for the Weatherbit API.
@@ -7,7 +7,7 @@ This is a wrapper for the Weatherbit API.
 The Weatherbit IO allows you to access forecasts, current data, and historical data. This library wraps this functionality, and makes it accessible with Python.
 
 
-# Installation
+## Installation
 
 You should use pip to install pyweatherbit.
 
