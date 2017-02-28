@@ -2,8 +2,6 @@
 Python Weather API - Pyweatherbit
 *******************
 
-.. image:: https://travis-ci.org/ZeevG/python-forecast.io.svg?branch=master
-
 This is a wrapper for the Weatherbit API.
 
 The Weatherbit IO allows you to access forecasts, current data, and historical data. This library wraps this functionality, and makes it accessible with Python.
@@ -125,11 +123,6 @@ The **Forecast** object, it contains both weather data and the HTTP response fro
 		- A dictionary of response headers. 
 	- **json**
 		- A dictionary containing the json data returned from the API call.
-		        self.city_name = response['city_name']
-        self.lat = response['lat']
-        self.lon = response['lon']
-        self.country_code = response['country_code']
-        self.state_code = response['state_code']
     - **city_name**
     	- City Name of the forecast points.
     - **country_code**
@@ -162,11 +155,6 @@ The **History** object, it contains both weather data and the HTTP response from
 		- A dictionary of response headers. 
 	- **json**
 		- A dictionary containing the json data returned from the API call.
-		        self.city_name = response['city_name']
-        self.lat = response['lat']
-        self.lon = response['lon']
-        self.country_code = response['country_code']
-        self.state_code = response['state_code']
     - **city_name**
     	- City Name of the historical points.
     - **country_code**
