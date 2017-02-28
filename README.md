@@ -67,8 +67,8 @@ The ``get_forecast()`` method requires named parameters. The current choices are
 This makes an API request and returns a **Forecast** object (see below).
 
 Parameters:  
-	⋅⋅* **key** - Your API key from https://www.weatherbit.io.  
-	⋅⋅* **lat** - The latitude of the location for the forecast  
+	... **key** - Your API key from https://www.weatherbit.io.  
+	... **lat** - The latitude of the location for the forecast  
 	⋅⋅* **lon** - The longitude of the location for the forecast  
 	⋅⋅* **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
 
