@@ -50,7 +50,7 @@ To use the wrapper:
 	forecast = api.get_forecast(city="Raleigh", state="North Carolina", country="US")
 
 	# To get a daily forecast of temperature, and precipitation:
-	print forecast.get_series(['temp','precipitation'])
+	print forecast.get_series(['temp','precip'])
 
 	# Get daily history by lat/lon:
 	api.set_granularity('daily')
