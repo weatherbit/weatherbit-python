@@ -92,27 +92,33 @@ class SingleTime(UnicodeMixin):
 
 class Point(UnicodeMixin):
     def __init__(self, point):
-        self.snow = point.get('snow')
-        self.wind_dir = point.get('wind_dir')
-        self.weather = point.get('weather')
-        self.wind_spd = point.get('wind_spd')
-        self.rh = point.get('rh')
+        self.pres = point.get('pres')
         self.slp = point.get('slp')
+        self.weather = point.get('weather')
+        self.rh = point.get('rh')
+        self.dewpt = point.get('dewpt')
         self.temp = point.get('temp')
         self.max_temp = point.get('max_temp')
         self.min_temp = point.get('min_temp')
         self.precip = point.get('precip')
+        self.snow = point.get('snow')
+        self.snow_depth = point.get('snow_depth')
+        self.ghi = point.get('ghi')
+        self.dni = point.get('dni')
+        self.dhi = point.get('dhi')
+        self.pod = point.get('pod')
+        self.uv  = point.get('uv')
+        self.max_uv = point.get('max_uv')
+        self.precip_gpm = point.get('precip_gpm')
+        self.wind_gust_spd = point.get('wind_gust_spd')
+        self.max_wind_ts = point.get('max_wind_ts')
+        self.wind_spd = point.get('wind_spd')
+        self.wind_dir = point.get('wind_dir')
+        self.max_wind_spd = point.get('max_wind_spd')
+        self.max_wind_dir = point.get('max_wind_dir')
         self.datetime = self._get_date_from_timestamp(point.get('datetime'))
         self.clouds = point.get('clouds')
 
-        if 'precip6h' in point:
-            self.precip6h = point.get('precip6h')
-        else:
-            self.precip6h = None
-        if 'snow6h' in point:
-            self.snow6h = point.get('snow6h')
-        else:
-            self.snow6h = None
     def _get_date_from_timestamp(self, datestamp):
         if ':' in datestamp:
             date = datetime.datetime.strptime(datestamp, '%Y-%m-%d:%H')
@@ -141,15 +147,11 @@ class SingleTimePoint(UnicodeMixin):
         self.datetime = self._get_date_from_timestamp(point.get('datetime'))
         self.sunrise = self._get_date_from_timestamp(point.get('sunrise'), True)
         self.sunset = self._get_date_from_timestamp(point.get('sunset'), True)
+        self.ghi = point.get('ghi')
+        self.dni = point.get('dni')
+        self.dhi = point.get('dhi')
         self.clouds = point.get('clouds')
-        if 'precip3h' in point:
-            self.precip3h = point.get('precip3h')
-        else:
-            self.precip3h = None
-        if 'snow3h' in point:
-            self.snow3h = point.get('snow3h')
-        else:
-            self.snow3h = None
+
     def _get_date_from_timestamp(self, datestamp, min_sec=False):
         
         if min_sec:
@@ -158,7 +160,6 @@ class SingleTimePoint(UnicodeMixin):
             date_format = "%Y-%m-%d:%H"
 
         return datetime.datetime.strptime(datestamp, date_format)
-
 
 class Forecast(TimeSeries):
     """""
