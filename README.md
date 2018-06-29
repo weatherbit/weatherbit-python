@@ -41,7 +41,7 @@ To use the wrapper:
 	api.set_granularity('daily')
 
 	# Query by lat/lon
-	forecast = api.get_forecast(lat=lat, lon=long)
+	forecast = api.get_forecast(lat=lat, lon=lon)
 
 	# You can also query by city:
 	forecast = api.get_forecast(city="Raleigh,NC")
