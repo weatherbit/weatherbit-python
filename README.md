@@ -53,7 +53,7 @@ To use the wrapper:
 	print forecast.get_series(['temp','precipitation'])
 
 	# Get daily history by lat/lon:
-    api.set_granularity('daily')
+	api.set_granularity('daily')
 	history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
 
 	# To get a daily time series of temperature, precipitation, and rh:
@@ -61,7 +61,7 @@ To use the wrapper:
 
 	# Get hourly history by lat/lon
 	api.set_granularity('hourly')
-    history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
+	history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
 	
 	# To get an hourly time series of temperature, precipitation, and rh:
 	print history.get_series(['precip','temp','rh'])
