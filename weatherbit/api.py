@@ -4,22 +4,22 @@ import datetime
 from weatherbit.models import Forecast, History, Current
 
 class Api(object):
-    def __init__(self, key, granularity=None, https=False):
+    def __init__(self, key, granularity=None, history_granularity=None, https=True):
 
         self.key = key
-        self.version = 'v1.0'
-        self.forecast_granularity = None
+        self.version = 'v2.0'
+        self.forecast_granularity = 'daily'
+        self.history_granularity = 'hourly'
         self.callback = None
-        self.https = False
+        self.https = https
 
         if granularity:
             self.forecast_granularity = granularity
 
-        if https:
-            self.https = True
+        if history_granularity:
+            self.history_granularity = history_granularity
 
         self.api_domain = "api.weatherbit.io"
-
         return
 
     def _get_base_url(self):
@@ -93,6 +93,8 @@ class Api(object):
             arg_url_str = "&city=%(city)s"
         elif 'city_id' in kwargs:
             arg_url_str = "&city_id=%(city_id)s"
+        elif 'station' in kwargs:
+            arg_url_str = "&station=%(station)s"
 
         # Add on additional parameters.
         if 'start_date' in kwargs:
@@ -120,6 +122,13 @@ class Api(object):
         return
 
     def set_forecast_granularity(self, granularity):
+        self.forecast_granularity = granularity
+
+    def set_history_granularity(self, granularity):
+        self.history_granularity = granularity
+
+    def set_granularity(self, granularity):
+        self.history_granularity = granularity
         self.forecast_granularity = granularity
 
     def get_forecast(self, **kwargs):
@@ -159,7 +168,7 @@ class Api(object):
         end_date = kwargs['end_date']
 
         # Only hourly is supported atm.
-        kwargs['granularity'] = 'hourly'
+        kwargs['granularity'] = self.history_granularity
 
         # Convert start_date, and end_dates into strings.
         # Assumes all time is in UTC.
