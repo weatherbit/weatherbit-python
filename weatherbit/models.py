@@ -161,7 +161,6 @@ class SingleTimePoint(UnicodeMixin):
 
         return datetime.datetime.strptime(datestamp, date_format)
 
-
 class Forecast(TimeSeries):
     """""
     The Forecast API Response class, extends TimeSeries.
