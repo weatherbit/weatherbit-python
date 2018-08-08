@@ -152,10 +152,10 @@ class SingleTimePoint(UnicodeMixin):
         self.dhi = point.get('dhi')
         self.clouds = point.get('clouds')
 
-    def _get_date_from_timestamp(self, datestamp, min_sec=False):
+    def _get_date_from_timestamp(self, datestamp, hr_min=False):
         
-        if min_sec:
-            date_format = "%H:%M:%S"
+        if hr_min:
+            date_format = "%H:%M"
         else:
             date_format = "%Y-%m-%d:%H"
 
