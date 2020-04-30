@@ -25,6 +25,6 @@ setup(
     url="http://www.weatherbit.io",
     packages=['weatherbit'],
     package_data={'weatherbit': ['LICENSE.txt', 'README.md']},
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     install_requires=['requests>=1.6', 'responses'],
 )
