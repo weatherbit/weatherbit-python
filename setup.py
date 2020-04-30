@@ -24,7 +24,7 @@ setup(
     keywords="weather API python wrapper weatherbit.io location",
     url="http://www.weatherbit.io",
     packages=['weatherbit'],
-    package_data={'weatherbit': ['LICENSE.txt', 'README.rst']},
+    package_data={'weatherbit': ['LICENSE.txt', 'README.md']},
     long_description=open('README.rst').read(),
     install_requires=['requests>=1.6', 'responses'],
 )
