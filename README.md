@@ -77,7 +77,7 @@ To use the wrapper:
 	# Or Postal code:
 	forecast = api.get_forecast(postal_code="27601", country="US", hours=240)
 
-	# To get a daily forecast of temperature, and precipitation:
+	# get an hourly forecast:
 	print(forecast.get_series(['temp','precip','weather', 'solar_rad']))
 
 
@@ -100,7 +100,7 @@ To use the wrapper:
 	api.set_granularity('hourly')
 	history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
 	
-	# To get an hourly time series of temperature, precipitation, and rh:
+	# To get an hourly time series for these fields:
 	print(history.get_series(['precip','temp','rh','solar_rad']))
 
 	# Get historical air quality data
