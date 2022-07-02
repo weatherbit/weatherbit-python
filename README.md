@@ -50,10 +50,18 @@ To use the wrapper:
 	forecast = api.get_forecast(city="Raleigh", state="North Carolina", country="US")
 
 	# To get a daily forecast of temperature, and precipitation:
-	print forecast.get_series(['temp','precip'])
+	print(forecast.get_series(['temp','precip','solar_rad']))
 
-	# Get daily history by lat/lon:
-	api.set_granularity('daily')
+
+	# Get an hourly air quality forecast for a lat/lon
+	forecast_AQ = api.get_forecast(source='airquality', lat=lat, lon=lon)
+	print(forecast_AQ.get_series(['aqi','pm10','no2']))
+
+
+	### HISTORY
+
+	# Get sub-hourly history by lat/lon:
+	api.set_granularity('subhourly')
 	history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
 
 	# To get a daily time series of temperature, precipitation, and rh:
@@ -64,7 +72,22 @@ To use the wrapper:
 	history = api.get_history(lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
 	
 	# To get an hourly time series of temperature, precipitation, and rh:
-	print history.get_series(['precip','temp','rh'])
+	print(history.get_series(['precip','temp','rh','solar_rad']))
+
+	# Get historical air quality data
+	history_AQ = api.get_history(source='airquality', lat=lat, lon=lon, start_date='2018-02-01',end_date='2018-02-02')
+	print(history_AQ.get_series(['aqi','pm10','no2']))
+
+
+	### Current Conditions
+
+	# Get current air quality
+	AQ = api.get_current(source='airquality', city="Raleigh", state="North Carolina", country="US")
+	print(AQ.get_series(['aqi','pm10','pm25']))
+
+	# Get current conditions
+	current_weather = api.get_current(city="Raleigh", state="North Carolina", country="US")
+	print(current_weather.get_series(['weather','temp','precip']))
 
 	...
 ```

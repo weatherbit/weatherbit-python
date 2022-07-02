@@ -30,13 +30,22 @@ class Api(object):
         return base_url + self.api_domain + "/" + self.version + "/"
 
     def _get_forecast_url(self, granularity):
-        return self._get_base_url() + "forecast/" + granularity + "?key=" + self.key
+        return self._get_base_url() + "forecast/" + granularity + "?key=" + self.key + "&client=weatherbitpython"
+
+    def _get_forecast_url_AQ(self):
+        return self._get_base_url() + "forecast/airquality?key=" + self.key + "&client=weatherbitpython"
 
     def _get_current_url(self):
-        return self._get_base_url() + "current/" + "?key=" + self.key
+        return self._get_base_url() + "current?key=" + self.key + "&client=weatherbitpython"
+
+    def _get_current_url_AQ(self):
+        return self._get_base_url() + "current/airquality?key=" + self.key + "&client=weatherbitpython"
 
     def _get_history_url(self, granularity):
-        return self._get_base_url() + "history/" + granularity + "?key=" + self.key
+        return self._get_base_url() + "history/" + granularity + "?key=" + self.key + "&client=weatherbitpython"
+
+    def _get_history_url_AQ(self):
+        return self._get_base_url() + "history/airquality?key=" + self.key + "&client=weatherbitpython"
 
     def get_forecast_url(self, **kwargs):
         base_url = self._get_forecast_url(kwargs['granularity'])
@@ -61,9 +70,52 @@ class Api(object):
 
         return base_url + (arg_url_str % kwargs)
 
+    def get_forecast_url_AQ(self, **kwargs):
+        base_url = self._get_forecast_url_AQ()
+
+        # Build root geo-lookup.
+        if 'lat' in kwargs and 'lon' in kwargs:
+            arg_url_str = "&lat=%(lat)s&lon=%(lon)s"
+        elif 'city' in kwargs:
+            arg_url_str = "&city=%(city)s"
+        elif 'city_id' in kwargs:
+            arg_url_str = "&city_id=%(city_id)s"
+
+        # Add on additional parameters.
+        if 'state' in kwargs:
+            arg_url_str = arg_url_str + "&state=%(state)s"
+        if 'country' in kwargs:
+            arg_url_str = arg_url_str + "&country=%(country)s"
+        if 'days' in kwargs:
+            arg_url_str = arg_url_str + "&days=%(days)s"
+        if 'units' in kwargs:
+            arg_url_str = arg_url_str + "&units=%(units)s"
+
+        return base_url + (arg_url_str % kwargs)
 
     def get_current_url(self, **kwargs):
         base_url = self._get_current_url()
+
+        # Build root geo-lookup.
+        if 'lat' in kwargs and 'lon' in kwargs:
+            arg_url_str = "&lat=%(lat)s&lon=%(lon)s"
+        elif 'city' in kwargs:
+            arg_url_str = "&city=%(city)s"
+        elif 'city_id' in kwargs:
+            arg_url_str = "&city_id=%(city_id)s"
+
+        # Add on additional parameters.
+        if 'state' in kwargs:
+            arg_url_str = arg_url_str + "&state=%(state)s"
+        if 'country' in kwargs:
+            arg_url_str = arg_url_str + "&country=%(country)s"
+        if 'units' in kwargs:
+            arg_url_str = arg_url_str + "&units=%(units)s"
+
+        return base_url + (arg_url_str % kwargs)
+
+    def get_current_url_AQ(self, **kwargs):
+        base_url = self._get_current_url_AQ()
 
         # Build root geo-lookup.
         if 'lat' in kwargs and 'lon' in kwargs:
@@ -111,6 +163,34 @@ class Api(object):
 
         return base_url + (arg_url_str % kwargs)
 
+    def get_history_url_AQ(self, **kwargs):
+        base_url = self._get_history_url_AQ()
+
+        # Build root geo-lookup.
+        if 'lat' in kwargs and 'lon' in kwargs:
+            arg_url_str = "&lat=%(lat)s&lon=%(lon)s"
+        elif 'city' in kwargs:
+            arg_url_str = "&city=%(city)s"
+        elif 'city_id' in kwargs:
+            arg_url_str = "&city_id=%(city_id)s"
+        elif 'station' in kwargs:
+            arg_url_str = "&station=%(station)s"
+
+        # Add on additional parameters.
+        if 'start_date' in kwargs:
+            arg_url_str = arg_url_str + "&start_date=%(start_date)s"
+        if 'end_date' in kwargs:
+            arg_url_str = arg_url_str + "&end_date=%(end_date)s"
+
+        if 'state' in kwargs:
+            arg_url_str = arg_url_str + "&state=%(state)s"
+        if 'country' in kwargs:
+            arg_url_str = arg_url_str + "&country=%(country)s"
+        if 'units' in kwargs:
+            arg_url_str = arg_url_str + "&units=%(units)s"
+
+        return base_url + (arg_url_str % kwargs)
+
     def set_key(self, key):
         self.key = key
 
@@ -131,32 +211,37 @@ class Api(object):
         self.history_granularity = granularity
         self.forecast_granularity = granularity
 
-    def get_forecast(self, **kwargs):
+    def get_forecast(self, source = None, **kwargs):
         
         if kwargs is None:
             raise Exception('Arguments Required.')
 
-        if self.forecast_granularity:
-            kwargs['granularity'] = self.forecast_granularity
+        if source == 'airquality':
+            url = self.get_forecast_url_AQ(**kwargs)
         else:
-            raise Exception('Granularity is not set on the Api object, or it has not been supplied via call.') 
-
-        url = self.get_forecast_url(**kwargs)
+            if self.forecast_granularity:
+                kwargs['granularity'] = self.forecast_granularity
+            else:
+                raise Exception('Granularity is not set on the Api object, or it has not been supplied via call.') 
+            url = self.get_forecast_url(**kwargs)
 
         forecast = self._make_request(url, self._parse_forecast)
 
         return forecast
 
-    def get_current(self, **kwargs):
+    def get_current(self, source = None, **kwargs):
         
         if kwargs is None:
             raise Exception('Arguments Required.')
 
-        url = self.get_current_url(**kwargs)
+        if source == 'airquality':
+            url = self.get_current_url_AQ(**kwargs)
+        else:
+            url = self.get_current_url(**kwargs)
 
         return self._make_request(url, self._parse_current)
 
-    def get_history(self, **kwargs):
+    def get_history(self, source = None, **kwargs):
         
         if kwargs is None:
             raise Exception('Arguments Required.')
@@ -185,13 +270,17 @@ class Api(object):
             else:
                 kwargs['end_date'] = end_date.strftime('%Y-%m-%d')
 
-        url = self.get_history_url(**kwargs)
+        if source == 'airquality':
+            url = self.get_history_url_AQ(**kwargs)
+        else:
+            url = self.get_history_url(**kwargs)
 
         return self._make_request(url, self._parse_history)
 
     def _parse_forecast(self, request_url):
         weatherbitio_reponse = requests.get(request_url)
-        weatherbitio_reponse.raise_for_status()
+        if weatherbitio_reponse.status_code != 200:
+            raise Exception(weatherbitio_reponse.json())
         json = weatherbitio_reponse.json()
         headers = weatherbitio_reponse.headers
 
@@ -199,7 +288,8 @@ class Api(object):
 
     def _parse_history(self, request_url):
         weatherbitio_reponse = requests.get(request_url)
-        weatherbitio_reponse.raise_for_status()
+        if weatherbitio_reponse.status_code != 200:
+            raise Exception(weatherbitio_reponse.json())
         json = weatherbitio_reponse.json()
         headers = weatherbitio_reponse.headers
 
@@ -207,7 +297,8 @@ class Api(object):
 
     def _parse_current(self, request_url):
         weatherbitio_reponse = requests.get(request_url)
-        weatherbitio_reponse.raise_for_status()
+        if weatherbitio_reponse.status_code != 200:
+            raise Exception(weatherbitio_reponse.json())
         json = weatherbitio_reponse.json()
         headers = weatherbitio_reponse.headers
 
