@@ -36,7 +36,12 @@ To use the wrapper:
 
 	api = Api(api_key)
 
-	# Set the granularity of the API - Options: ['daily','hourly','3hourly']
+	# Set the granularity of the API - Options: ['daily','hourly','subhourly']
+	# Depends on supported granularity of API - please see https://www.weatherbit.io/api
+	# Currently supported:
+	# History: daily, hourly, subhourly
+	# Forecast: daily, hourly
+	# Air quality: hourly
 	# Will only affect forecast requests.
 	api.set_granularity('daily')
 
