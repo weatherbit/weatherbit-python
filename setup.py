@@ -16,7 +16,7 @@ def read(fname):
 
 setup(
     name="pyweatherbit",
-    version="2.1.0",
+    version="2.1.1",
     author="Colin Craig",
     author_email="admin@weatherbit.io",
     description=("A python weather api wrapper for the Weatherbit.io API."),
