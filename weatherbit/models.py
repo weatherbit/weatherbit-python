@@ -177,6 +177,7 @@ class Point(UnicodeMixin):
         self.sunset_ts = point.get('sunset_ts')
 
         # AQ Vars:
+        self.aqi = point.get('aqi')
         self.pm25 = point.get('pm25')
         self.pm10 = point.get('pm10')
         self.o3 = point.get('o3')
@@ -264,7 +265,11 @@ class SingleTimePoint(UnicodeMixin):
         self.no2 = point.get('no2')
         self.so2 = point.get('so2')
         self.co = point.get('co')
-
+        self.pollen_level_tree = point.get('pollen_level_tree')
+        self.pollen_level_grass = point.get('pollen_level_grass')
+        self.pollen_level_weed = point.get('pollen_level_weed')
+        self.mold_level = point.get('mold_level')
+        self.predominant_pollen_type = point.get('predominant_pollen_type')
 
     def _get_date_from_timestamp(self, datestamp, hr_min=False, is_date=False):
         date_format = "%Y-%m-%dT%H:%M:%S"

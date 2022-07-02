@@ -30,25 +30,31 @@ class Api(object):
         return base_url + self.api_domain + "/" + self.version + "/"
 
     def _get_forecast_url(self, granularity):
-        return self._get_base_url() + "forecast/" + granularity + "?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "forecast/" + granularity + "?key=" + self.key + "&client=wbitpython"
 
     def _get_forecast_url_AQ(self):
-        return self._get_base_url() + "forecast/airquality?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "forecast/airquality?key=" + self.key + "&client=wbitpython"
 
     def _get_current_url(self):
-        return self._get_base_url() + "current?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "current?key=" + self.key + "&client=wbitpython"
 
     def _get_current_url_AQ(self):
-        return self._get_base_url() + "current/airquality?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "current/airquality?key=" + self.key + "&client=wbitpython"
 
     def _get_history_url(self, granularity):
-        return self._get_base_url() + "history/" + granularity + "?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "history/" + granularity + "?key=" + self.key + "&client=wbitpython"
 
     def _get_history_url_AQ(self):
-        return self._get_base_url() + "history/airquality?key=" + self.key + "&client=weatherbitpython"
+        return self._get_base_url() + "history/airquality?key=" + self.key + "&client=wbitpython"
 
     def get_forecast_url(self, **kwargs):
-        base_url = self._get_forecast_url(kwargs['granularity'])
+
+        granularity = kwargs['granularity']
+
+        if granularity not in ['hourly','daily']:
+            raise Exception('Unsupported granularity')
+
+        base_url = self._get_forecast_url(granularity)
 
         # Build root geo-lookup.
         if 'lat' in kwargs and 'lon' in kwargs:
@@ -57,6 +63,10 @@ class Api(object):
             arg_url_str = "&city=%(city)s"
         elif 'city_id' in kwargs:
             arg_url_str = "&city_id=%(city_id)s"
+        elif 'station' in kwargs:
+            arg_url_str = "&station=%(station)s"
+        elif 'postal_code' in kwargs:
+            arg_url_str = "&postal_code=%(postal_code)s"
 
         # Add on additional parameters.
         if 'state' in kwargs:
@@ -67,6 +77,8 @@ class Api(object):
             arg_url_str = arg_url_str + "&days=%(days)s"
         if 'units' in kwargs:
             arg_url_str = arg_url_str + "&units=%(units)s"
+        if 'hours' in kwargs:
+            arg_url_str = arg_url_str + "&hours=%(hours)s"
 
         return base_url + (arg_url_str % kwargs)
 
@@ -80,6 +92,10 @@ class Api(object):
             arg_url_str = "&city=%(city)s"
         elif 'city_id' in kwargs:
             arg_url_str = "&city_id=%(city_id)s"
+        elif 'station' in kwargs:
+            arg_url_str = "&station=%(station)s"
+        elif 'postal_code' in kwargs:
+            arg_url_str = "&postal_code=%(postal_code)s"
 
         # Add on additional parameters.
         if 'state' in kwargs:
@@ -90,6 +106,8 @@ class Api(object):
             arg_url_str = arg_url_str + "&days=%(days)s"
         if 'units' in kwargs:
             arg_url_str = arg_url_str + "&units=%(units)s"
+        if 'hours' in kwargs:
+            arg_url_str = arg_url_str + "&hours=%(hours)s"
 
         return base_url + (arg_url_str % kwargs)
 
@@ -103,6 +121,10 @@ class Api(object):
             arg_url_str = "&city=%(city)s"
         elif 'city_id' in kwargs:
             arg_url_str = "&city_id=%(city_id)s"
+        elif 'station' in kwargs:
+            arg_url_str = "&station=%(station)s"
+        elif 'postal_code' in kwargs:
+            arg_url_str = "&postal_code=%(postal_code)s"
 
         # Add on additional parameters.
         if 'state' in kwargs:
@@ -124,6 +146,8 @@ class Api(object):
             arg_url_str = "&city=%(city)s"
         elif 'city_id' in kwargs:
             arg_url_str = "&city_id=%(city_id)s"
+        elif 'postal_code' in kwargs:
+            arg_url_str = "&postal_code=%(postal_code)s"
 
         # Add on additional parameters.
         if 'state' in kwargs:
@@ -136,6 +160,12 @@ class Api(object):
         return base_url + (arg_url_str % kwargs)
 
     def get_history_url(self, **kwargs):
+
+        granularity = kwargs['granularity']
+
+        if granularity not in ['subhourly', 'hourly', 'daily']:
+            raise Exception('Unsupported granularity')
+
         base_url = self._get_history_url(kwargs['granularity'])
 
         # Build root geo-lookup.
@@ -147,6 +177,8 @@ class Api(object):
             arg_url_str = "&city_id=%(city_id)s"
         elif 'station' in kwargs:
             arg_url_str = "&station=%(station)s"
+        elif 'postal_code' in kwargs:
+            arg_url_str = "&postal_code=%(postal_code)s"
 
         # Add on additional parameters.
         if 'start_date' in kwargs:
