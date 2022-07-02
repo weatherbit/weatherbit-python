@@ -31,10 +31,12 @@ To use the wrapper:
 
 	from weatherbit.api import Api
 	api_key = "YOUR API KEY"
-	lat = 38.00
-	lon = -125.75
+	lat = 35.50
+	lon = -78.50
 
 	api = Api(api_key)
+
+	### FORECASTS
 
 	# Set the granularity of the API - Options: ['daily','hourly','subhourly']
 	# Depends on supported granularity of API - please see https://www.weatherbit.io/api
@@ -44,20 +46,42 @@ To use the wrapper:
 	# Air quality: hourly
 	# Will only affect forecast requests.
 	api.set_granularity('daily')
+	
 
-	# Query by lat/lon
-	forecast = api.get_forecast(lat=lat, lon=lon)
+	### Forecasts (daily)
+
+	# Query by lat/lon - get extended forecast out to 240 hours (default 48 hours)
+	forecast = api.get_forecast(lat=lat, lon=lon, hours=240)
 
 	# You can also query by city:
-	forecast = api.get_forecast(city="Raleigh,NC")
+	forecast = api.get_forecast(city="Raleigh,NC", hours=240)
 
 	# Or City, state, and country:
-	forecast = api.get_forecast(city="Raleigh", state="North Carolina", country="US")
+	forecast = api.get_forecast(city="Raleigh", state="North Carolina", country="US", hours=240)
+
+	# Or Postal code:
+	forecast = api.get_forecast(postal_code="27601", country="US", hours=240)
+
+	# get_series requires a list of fields to return in a time series (list).
+	# See documentation for field names: https://www.weatherbit.io/api
+	print(forecast.get_series(['high_temp','low_temp','precip','weather']))
+
+
+	### Forecasts (hourly)
+	api.set_granularity('hourly')
+
+
+	# Query by lat/lon - get extended forecast out to 240 hours (default 48 hours)
+	forecast = api.get_forecast(lat=lat, lon=lon, hours=240)
+
+	# Or Postal code:
+	forecast = api.get_forecast(postal_code="27601", country="US", hours=240)
 
 	# To get a daily forecast of temperature, and precipitation:
-	print(forecast.get_series(['temp','precip','solar_rad']))
+	print(forecast.get_series(['temp','precip','weather', 'solar_rad']))
 
 
+	### Forecasts (hourly - Air quality)
 	# Get an hourly air quality forecast for a lat/lon
 	forecast_AQ = api.get_forecast(source='airquality', lat=lat, lon=lon)
 	print(forecast_AQ.get_series(['aqi','pm10','no2']))
@@ -88,16 +112,14 @@ To use the wrapper:
 
 	# Get current air quality
 	AQ = api.get_current(source='airquality', city="Raleigh", state="North Carolina", country="US")
-	print(AQ.get_series(['aqi','pm10','pm25']))
+	print(AQ.get(['aqi','pm10','pm25']))
 
 	# Get current conditions
 	current_weather = api.get_current(city="Raleigh", state="North Carolina", country="US")
-	print(current_weather.get_series(['weather','temp','precip']))
+	print(current_weather.get(['weather','temp','precip']))
 
 	...
 ```
-
-The ``get_forecast()`` method requires named parameters. The current choices are either (lat=..., lon=...), (city="City,ST"), or (city=..., state=..., country=...)
 
 
 ### Advanced
@@ -112,6 +134,7 @@ Parameters:
 - **lat** - The latitude of the location for the forecast  
 - **lon** - The longitude of the location for the forecast  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
+- **source** - (optional) "airquality" - to return airquality data instead.  
 
 #### *function* weatherbit.Api.get_forecast(city=..., state=..., country=...)
 ---------------------------------------------------
@@ -123,170 +146,106 @@ Parameters:
 - **city** - The City to search by. This can be appended with a state like -> "City,ST".  
 - **state** - (optional) State of location.  
 - **country** - (optional) Country of location  
+- **source** - (optional) "airquality" - to return airquality data instead.  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
+
+#### *function* weatherbit.Api.get_forecast(postal_code=..., country=...)
+---------------------------------------------------
+
+This makes an API request and returns a **Forecast** object (see below).
+
+Parameters:
+- **key** - Your API key from https://www.weatherbit.io.  
+- **postal_code** - postal code.  
+- **country** - (recommended) Country of location  
+- **source** - (optional) "airquality" - to return airquality data instead.  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
   
-#### *function* weatherbit.Api.get_history(lat=..., lon=...)  
+#### *function* weatherbit.Api.get_history(lat=..., lon=..., start_date=..., end_date=...)  
 ---------------------------------------------------
   
 This makes an API request and returns a **History** object (see below).  
   
 Parameters:  
 - **key** - Your API key from https://www.weatherbit.io.  
-- **lat** - The latitude of the location for the forecast  
-- **lon** - The longitude of the location for the forecast  
+- **start_date** - Start date of data  
+- **end_date** - End date of data  
+- **lat** - The latitude of the location  
+- **lon** - The longitude of the location    
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
+- **source** - (optional) "airquality" - to return airquality data instead.  
 
-#### *function* weatherbit.Api.get_history(city=..., state=..., country=...)  
+#### *function* weatherbit.Api.get_history(city=..., state=..., country=..., start_date=..., end_date=...)  
 ---------------------------------------------------  
   
 This makes an API request and returns a **History** object (see below).   
   
 Parameters:  
 - **key** - Your API key from https://www.weatherbit.io.  
+- **start_date** - Start date of data  
+- **end_date** - End date of data  
 - **city** - The City to search by. This can be appended with a state like -> "City,ST".  
 - **state** - (optional) State of location.  
 - **country** - (optional) Country of location  
-- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
+- **source** - (optional) "airquality" - to return airquality data instead.  
 
-----------------------------------------------------
-
-
-
-#### *class* forecastio.models.Forecast  
-------------------------------------  
-
-The **Forecast** object, it contains both weather data and the HTTP response from Weatherbit  
-
-**Attributes**  
-- **http_headers**  
-		-  A dictionary of response headers.   
-- **json**
-		-  A dictionary containing the json data returned from the API call.  
-- **city_name**  
-    	-  City Name of the forecast points.  
-- **country_code**
-    	-  Country Code of the forecast points  
-- **state_code**
-    	-  State Code of the forecast points  
-- **lat**  
-    	-  Latitude of the forecast points  
-- **lon**  
-    	-  Longitude of the forecast points  
-- **points**  
-	-  Array of forecast data Point objects.  
-
-**Methods**  
-- **get_series([var1, var2, ... , varn])**  
-		-  Returns list of dicts sorted by datetime, containing the desired variables in a time series.  
-- **update()**  
-		-  Refreshes the forecast data by making a new request.  
-
-----------------------------------------------------
-
-#### *class* forecastio.models.History  
-------------------------------------
-
-The **History** object, it contains both weather data and the HTTP response from Weatherbit  
+#### *function* weatherbit.Api.get_history(postal_code=..., country=..., start_date=..., end_date=...)  
+---------------------------------------------------  
   
-**Attributes**  
-- **response**  
-		-  The Response object returned from requests request.get() method.  
-- **http_headers**  
-		-  A dictionary of response headers.   
-- **json**  
-		-  A dictionary containing the json data returned from the API call.  
-- **city_name**  
-    	-  City Name of the historical points.  
-- **country_code**  
-    	-  Country Code of the historical points  
-- **state_code**  
-    	-  State Code of the historical points  
-- **lat**  
-    	-  Latitude of the historical points  
-- **lon**  
-    	-  Longitude of the historical points  
-- **points**  
-	-  Array of historical data Point objects.  
+This makes an API request and returns a **History** object (see below).   
   
-**Methods**  
-- **get_series([var1, var2, ... , varn])**  
-		-  Returns list of dicts sorted by datetime, containing the desired variables in a time series.  
-- **update()**   
-		-  Refreshes the forecast data by making a new request.  
+Parameters:  
+- **key** - Your API key from https://www.weatherbit.io.  
+- **start_date** - Start date of data  
+- **end_date** - End date of data  
+- **postal_code** - postal code.  
+- **country** - (recommended) Country of location  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
+- **source** - (optional) "airquality" - to return airquality data instead.  
 
 ----------------------------------------------------
 
-#### *class* weatherbit.models.Point
----------------------------------------------
-
-Contains data about a history or forecast over time.  
-
-**Attributes**  
-- **snow**  
-		-  Total Snowfall.  
-- **precip**
-		-  Total Liquid equivalent precipitation.  
-- **snow6h**  
-		-  6h Total Snowfall.  
-- **precip6h**  
-		-  6h Total Liquid equivalent precipitation.  
-- **datetime**  
-		-  Datetime object - Datetime  (UTC).  
-- **wind_dir**  
-		-  Average Wind direction in degrees (0-360).  
-- **wind_spd**  
-		-  Average Wind speed.   
-- **rh**  
-		-  Average Relative Humidity (%).  
-- **clouds**  
-		-  Average Cloud cover (%).  
-- **slp**  
-		-  Average Sea level pressure in millibars.  
-- **temp**  
-		-  Average Temperature.  
-- **max_temp**  
-		-  Maximum Temperature. (daily only)  
-- **min_temp**  
-		-  Minimum Temperature. (daily only)  
-- **weather**  
-	    -  Dict containing day/night weather icon, description, and code.  
-
-----------------------------------------------------
-
-
-#### *class* weatherbit.models.SingleTimePoint  
----------------------------------------------
-
-Contains data about a single point in time - Current weather data.  
-
-**Attributes**  
-- **snow**  
-		-  Total Snowfall.  
-- **precip**
-		-  Total Liquid equivalent precipitation.  
-- **datetime**  
-		-  Datetime object - Datetime  (UTC).  
-- **sunrise**  
-		-  Datetime object - Sunrise time (UTC).  
-- **sunset**  
-		-  Datetime object - Sunset time  (UTC).  
-- **wind_dir**  
-		-  Wind direction in degrees (0-360).  
-- **wind_spd**  
-		-  Wind speed.   
-- **rh**  
-		-  Relative Humidity (%).  
-- **slp**  
-		-  Sea level pressure in millibars.  
-- **temp**  
-		-  Temperature.  
-- **clouds**  
-		-  Cloud cover (%).  
-- **visibility**  
-		-  Visibility text (for METAR observations only).  
-- **station**  
-		-  Station ID.  
-- **weather**  
-	    -  Dict containing day/night weather icon, description, and code.  
+#### *function* weatherbit.Api.get_current(postal_code=..., country=..., start_date=..., end_date=...)  
+---------------------------------------------------  
   
+This makes an API request and returns a **Current Data** object (see below).   
+  
+Parameters:  
+- **key** - Your API key from https://www.weatherbit.io.  
+- **postal_code** - postal code.  
+- **country** - (recommended) Country of location  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
+- **source** - (optional) "airquality" - to return airquality data instead.  
+
 ----------------------------------------------------
+
+#### *function* weatherbit.Api.get_current(lat=..., lon=..., country=..., start_date=..., end_date=...)  
+---------------------------------------------------  
+  
+This makes an API request and returns a **Current Data** object (see below).   
+  
+Parameters:  
+- **key** - Your API key from https://www.weatherbit.io.  
+- **lat** - The latitude of the location  
+- **lon** - The longitude of the location  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
+- **source** - (optional) "airquality" - to return airquality data instead.  
+
+----------------------------------------------------
+
+#### *function* weatherbit.Api.get_current(city=..., state=..., country=...)  
+---------------------------------------------------  
+  
+This makes an API request and returns a **Current Data** object (see below).   
+  
+Parameters:  
+- **key** - Your API key from https://www.weatherbit.io.  
+- **city** - The City to search by. This can be appended with a state like -> "City,ST".  
+- **state** - (optional) State of location.  
+- **country** - (optional) Country of location  
+- **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
+- **source** - (optional) "airquality" - to return airquality data instead.  
+
+----------------------------------------------------
+
