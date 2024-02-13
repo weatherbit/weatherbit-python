@@ -202,7 +202,7 @@ class Point(UnicodeMixin):
         self.clouds = point.get('clouds')
         self.clouds_hi = point.get('clouds_hi')
         self.clouds_mid = point.get('clouds_mid')
-        self.clouds_lo = point.get('clouds_lo')
+        self.clouds_low = point.get('clouds_low')
 
     def _get_date_from_timestamp(self, datestamp, is_date=False):
         date_format = "%Y-%m-%dT%H:%M:%S"
