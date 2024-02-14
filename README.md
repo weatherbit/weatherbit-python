@@ -36,16 +36,13 @@ To use the wrapper:
 
 	api = Api(api_key)
 
-	### FORECASTS
-
-	# Set the granularity of the API - Options: ['daily','hourly','subhourly']
-	# Depends on supported granularity of API - please see https://www.weatherbit.io/api
-	# Currently supported:
+	# Currently supported tp options (granularity):
 	# History: daily, hourly, subhourly
 	# AGWeather History: daily, hourly
 	# Forecast: daily, hourly, minutely
 	# Air quality: hourly
 	# Will only affect forecast requests.
+
 	### Forecasts (daily)
 
 	# Query by lat/lon - get extended forecast out to 240 hours (default 48 hours)
