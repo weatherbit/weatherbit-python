@@ -36,7 +36,7 @@ To use the wrapper:
 
 	api = Api(api_key)
 
-	# Currently supported tp options (granularity):
+	# Currently supported tp options (time period):
 	# History: daily, hourly, subhourly
 	# AGWeather History: daily, hourly
 	# Forecast: daily, hourly, minutely
@@ -119,7 +119,7 @@ To use the wrapper:
 	api.get_alerts(lat=lat, lon=lon).get()
 
 	# Get current conditions with alerts, and a minutely forecast for a location
-	api.get_alerts(lat=lat, lon=lon, include="alerts,minutely").get()
+	api.get_current(lat=lat, lon=lon, include="alerts,minutely").get()
 
 	...
 ```
@@ -138,7 +138,7 @@ Parameters:
 - **lon** - The longitude of the location for the forecast  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
-- **tp** - (optional) A string denoting the granularity of data 'minutely', 'hourly' or 'daily'.  
+- **tp** - (optional) A string denoting the time period of data 'minutely', 'hourly' or 'daily'.  
 
 #### *function* weatherbit.Api.get_forecast(city=..., state=..., country=...)
 ---------------------------------------------------
@@ -152,7 +152,7 @@ Parameters:
 - **country** - (optional) Country of location  
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
-- **tp** - (optional) A string denoting the granularity of data 'minutely', 'hourly' or 'daily'.  
+- **tp** - (optional) A string denoting the time period of data 'minutely', 'hourly' or 'daily'.  
 
 #### *function* weatherbit.Api.get_forecast(postal_code=..., country=...)
 ---------------------------------------------------
@@ -165,7 +165,7 @@ Parameters:
 - **country** - (recommended) Country of location  
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
-- **tp** - (optional) A string denoting the granularity of data 'minutely', 'hourly' or 'daily'.  
+- **tp** - (optional) A string denoting the time period of data 'minutely', 'hourly' or 'daily'.  
   
 #### *function* weatherbit.Api.get_history(lat=..., lon=..., start_date=..., end_date=...)  
 ---------------------------------------------------
@@ -180,7 +180,7 @@ Parameters:
 - **lon** - The longitude of the location    
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.  
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
-- **tp** - (optional) A string denoting the granularity of data 'hourly' or 'daily' or 'subhourly'.  
+- **tp** - (optional) A string denoting the time period of data 'hourly' or 'daily' or 'subhourly'.  
 
 #### *function* weatherbit.Api.get_history(city=..., state=..., country=..., start_date=..., end_date=...)  
 ---------------------------------------------------  
@@ -196,7 +196,7 @@ Parameters:
 - **country** - (optional) Country of location  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
-- **tp** - (optional) A string denoting the granularity of data 'hourly' or 'daily' or 'subhourly'. 
+- **tp** - (optional) A string denoting the time period of data 'hourly' or 'daily' or 'subhourly'. 
 
 #### *function* weatherbit.Api.get_history(postal_code=..., country=..., start_date=..., end_date=...)  
 ---------------------------------------------------  
@@ -211,7 +211,7 @@ Parameters:
 - **country** - (recommended) Country of location  
 - **units** - (optional) A string of the preferred units of measurement. Choices are currently 'S' for scientific, 'M' for Metric, or 'I' for imperial units.   
 - **source** - (optional) "airquality" or "agweather" - to return airquality/agweather data instead.  
-- **tp** - (optional) A string denoting the granularity of data 'hourly' or 'daily' or 'subhourly'. 
+- **tp** - (optional) A string denoting the time period of data 'hourly' or 'daily' or 'subhourly'. 
 
 ----------------------------------------------------
 

@@ -8,8 +8,8 @@ class Api(object):
     def __init__(self, key, granularity=None, history_granularity=None, https=True):
         self.key = key
         self.version = 'v2.0'
-        self.forecast_granularity = 'daily'
-        self.history_granularity = 'hourly'
+        self.forecast_granularity = None
+        self.history_granularity = None
         self.callback = None
         self.https = https
 
@@ -69,7 +69,7 @@ class Api(object):
             granularity = kwargs['tp']
 
         if granularity not in ['minutely', 'hourly', 'daily']:
-            raise Exception('Unsupported granularity')
+            raise Exception('Unsupported time period')
 
         base_url = self._get_forecast_url(granularity)
 
@@ -114,7 +114,7 @@ class Api(object):
             tp = self.forecast_granularity
 
         if tp not in ['hourly']:
-            print("WARNING: Unsupported granularity supplied. Returning default granularity")
+            print("WARNING: Unsupported time period supplied. Returning default time period")
 
         # Build root geo-lookup.
         if 'lat' in kwargs and 'lon' in kwargs:
@@ -233,7 +233,7 @@ class Api(object):
         if tp in ['daily']:
             arg_url_str = arg_url_str + "&tp={}".format(tp)
         else:
-            print("WARNING: Unsupported granularity supplied. Returning default granularity")
+            print("WARNING: Unsupported time period supplied. Returning default time period")
 
         return base_url + (arg_url_str % kwargs)
 
@@ -242,7 +242,7 @@ class Api(object):
         granularity = kwargs['granularity']
 
         if granularity not in ['subhourly', 'hourly', 'daily']:
-            raise Exception('Unsupported granularity')
+            raise Exception('Unsupported time period')
 
         base_url = self._get_history_url(kwargs['granularity'])
 
@@ -307,7 +307,7 @@ class Api(object):
         if tp in ['hourly']:
             arg_url_str = arg_url_str + "&tp={}".format(tp)
         else:
-            print("WARNING: Unsupported granularity supplied. Returning default granularity")
+            print("WARNING: Unsupported time period supplied. Returning default time period")
 
         return base_url + (arg_url_str % kwargs)
 
@@ -336,7 +336,7 @@ class Api(object):
         if tp in ['hourly','daily']:
             arg_url_str = arg_url_str + "&tp={}".format(tp)
         else:
-            print("WARNING: Unsupported granularity supplied. Returning default granularity")
+            print("WARNING: Unsupported time period supplied. Returning default time period")
 
         return base_url + (arg_url_str % kwargs)
 
@@ -369,7 +369,7 @@ class Api(object):
         if tp in ['hourly','daily', 'monthly']:
             arg_url_str = arg_url_str + "&tp={}".format(tp)
         else:
-            print("WARNING: Unsupported granularity supplied. Returning default granularity")
+            print("WARNING: Unsupported time period supplied. Returning default time period")
 
         return base_url + (arg_url_str % kwargs)
 
@@ -404,7 +404,7 @@ class Api(object):
             url = self.get_forecast_url_AGW(**kwargs)
         else:
             if 'tp' not in kwargs and self.forecast_granularity is None:
-                raise Exception("Granularity is not set on the Api object, or it has not been supplied via tp parameter.") 
+                raise Exception("Time period has not been set. Please supply it via the 'tp' parameter.") 
             url = self.get_forecast_url(**kwargs)
 
         forecast = self._make_request(url, self._parse_forecast)
