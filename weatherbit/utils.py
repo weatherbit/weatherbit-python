@@ -1,4 +1,5 @@
 import sys
+import re
 
 
 class UnicodeMixin(object):
@@ -8,11 +9,14 @@ class UnicodeMixin(object):
 
     if sys.version_info[0] >= 3:  # Python 3
         def __str__(self):
-            return self.__unicode__()
+            return super().__str__()
     else:  # Python 2
         def __str__(self):
-            return self.__unicode__().encode('utf8')
-
+            return super().__str__().encode('utf8')
 
 class PropertyUnavailable(AttributeError):
 	pass
+
+def is_valid_day_format(input_string):
+    pattern = re.compile(r'^\d{2}-\d{2}$')
+    return bool(pattern.match(input_string))
