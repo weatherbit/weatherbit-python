@@ -176,8 +176,8 @@ class SingleTime(UnicodeMixin):
         self.json = r.json()
         self.response = r
         self.points = []
-        self.points_minutely = []
-        self.points_alerts = []
+        self.points_minutely = None
+        self.points_alerts = None
         self._load(self.json)
 
     def _load(self, response):
@@ -197,12 +197,14 @@ class SingleTime(UnicodeMixin):
         self.points.sort(key=lambda p: p.datetime)
 
     def _load_from_points_minutely(self, points):
+        self.points_minutely = []
         for point in points:
             self.points_minutely.append(Point(point))
         # Sort by datetime.
         self.points_minutely.sort(key=lambda p: p.timestamp_utc)
 
     def _load_from_points_alerts(self, points):
+        self.points_alerts = []
         for point in points:
             self.points_alerts.append(SingleTimePoint(point))
         # Sort by datetime.
@@ -242,21 +244,22 @@ class SingleTime(UnicodeMixin):
                 series_point['datetime'] = p.datetime
                 series_point['timestamp_utc'] = p.timestamp_utc
                 series_point['timestamp_local'] = p.timestamp_local
-                if len(self.points_minutely) > 0:
+                if self.points_minutely is not None:
                     series_point['minutely'] = []
                     for pt in self.points_minutely:
                         series_point['minutely'].append({key: value for key, value in vars(pt).items() if not callable(value) and value is not None})
 
-                if len(self.points_alerts) > 0:
+                if self.points_alerts is not None:
                     series_point['alerts'] = []
                     for pt in self.points_alerts:
                         series_point['alerts'].append({key: value for key, value in vars(pt).items() if not callable(value) and value is not None})
 
                 series.append(series_point)
             series.sort(key=lambda p: p['datetime'])
-        elif len(self.points_alerts) > 0:
+        elif self.points_alerts is not None:
             # If api_vars is None or empty, include all non-None attributes
-            api_vars = [attr for attr in dir(self.points_alerts[0]) if not callable(getattr(self.points_alerts[0], attr)) and not attr.startswith("__")]
+            if len(self.points_alerts) > 0:
+                api_vars = [attr for attr in dir(self.points_alerts[0]) if not callable(getattr(self.points_alerts[0], attr)) and not attr.startswith("__")]
             exclude_none = True
 
             for p in self.points_alerts:
